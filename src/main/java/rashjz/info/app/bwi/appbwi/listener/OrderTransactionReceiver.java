@@ -16,7 +16,7 @@ public class OrderTransactionReceiver {
 
     @JmsListener(destination = HELLO_QUEUE, containerFactory = "jmsListenerContainerFactory")
     public void receiveMessage(@Payload final OrderDetail message) {
-        log.info("Received < < < < <" + message.toString() + ">");
+        log.info("Received < < < < <" + message.toString() + "> > > > >");
 
     }
 }

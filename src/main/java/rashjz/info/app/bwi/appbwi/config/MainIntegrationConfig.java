@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.dsl.channel.MessageChannels;
 import org.springframework.integration.jms.dsl.Jms;
@@ -17,6 +16,8 @@ import rashjz.info.app.bwi.appbwi.listener.OrderTransactionReceiver;
 
 import java.util.Arrays;
 
+import static org.springframework.integration.dsl.IntegrationFlows.from;
+
 
 @Configuration
 @Slf4j
@@ -25,24 +26,18 @@ public class MainIntegrationConfig {
 
     public static final String inputChannel = "requestChannel";
 
-//    @Bean
-//    @ConfigurationProperties(prefix = "spring.activemq")
-//    public ApplicationProperties configProperties() {
-//        return new ApplicationProperties();
-//    }
 
     @Bean
     public ActiveMQConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(ActiveMQConnectionFactory.DEFAULT_BROKER_URL);
         factory.setTrustedPackages(Arrays.asList("rashjz.info.app"));
-
         return factory;
     }
+
     @Bean
     public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
-//        factory.setConcurrency("3-10");
         return factory;
     }
 
@@ -54,10 +49,11 @@ public class MainIntegrationConfig {
 
     @Bean
     public IntegrationFlow jmsOutboundGatewayFlow() {
-       return IntegrationFlows.from(requestChannel())
-               .handle(Jms.outboundGateway(connectionFactory())
-//                       .replyContainer(c -> c.concurrentConsumers(3).sessionTransacted(true))
-                       .requestDestination(OrderTransactionReceiver.HELLO_QUEUE)).get();
+        return from(requestChannel())
+                .handle(Jms.outboundGateway(connectionFactory())
+                        .requestDestination(OrderTransactionReceiver.HELLO_QUEUE))
+                .get();
+
     }
 
 
@@ -66,8 +62,5 @@ public class MainIntegrationConfig {
         return Pollers.fixedRate(100).get();
     }
 
-//    @ServiceActivator(inputChannel = inputChannel)
-//    public void getInputChannelActivator(Message<OrderDetail> detailMessage) {
-//    }
 
 }
