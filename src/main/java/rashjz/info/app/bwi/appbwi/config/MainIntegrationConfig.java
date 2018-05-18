@@ -9,9 +9,11 @@ import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.dsl.channel.MessageChannels;
+import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.jms.dsl.Jms;
 import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.messaging.MessageHandler;
 import rashjz.info.app.bwi.appbwi.listener.OrderTransactionReceiver;
 
 import java.util.Arrays;
@@ -25,6 +27,7 @@ import static org.springframework.integration.dsl.IntegrationFlows.from;
 public class MainIntegrationConfig {
 
     public static final String inputChannel = "requestChannel";
+    public static final String rChannel = "replyChannel";
 
 
     @Bean
@@ -50,10 +53,9 @@ public class MainIntegrationConfig {
     @Bean
     public IntegrationFlow jmsOutboundGatewayFlow() {
         return from(requestChannel())
-                .handle(Jms.outboundGateway(connectionFactory())
-                        .requestDestination(OrderTransactionReceiver.HELLO_QUEUE))
+                .handle(Jms.outboundAdapter(connectionFactory())
+                        .destination(OrderTransactionReceiver.HELLO_QUEUE))
                 .get();
-
     }
 
 
@@ -62,5 +64,11 @@ public class MainIntegrationConfig {
         return Pollers.fixedRate(100).get();
     }
 
+    @Bean
+    public MessageHandler loggingHandler() {
+        LoggingHandler logger = new LoggingHandler("INFO");
+        logger.setShouldLogFullMessage(true);
+        return logger;
+    }
 
 }

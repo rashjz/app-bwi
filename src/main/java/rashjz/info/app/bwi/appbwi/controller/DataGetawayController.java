@@ -27,7 +27,7 @@ public class DataGetawayController {
                 .setHeader("Message_Header2", "Message_Header2_Value")
                 .build();
 
-        processService.uppercase(message);
+        processService.messageToAcmqFlow(message);
         return detail;
     }
 

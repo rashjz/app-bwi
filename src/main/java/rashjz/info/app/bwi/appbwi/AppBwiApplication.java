@@ -30,7 +30,8 @@ public class AppBwiApplication {
 					.setHeader("messageHeader", "Message_Header1_Value")
 					.build();
 
-			routeAndProcessService.uppercase(message);
+			routeAndProcessService.messageToAcmqFlow(message);
+
          };
     }
 

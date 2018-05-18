@@ -9,5 +9,6 @@ import rashjz.info.app.bwi.appbwi.config.MainIntegrationConfig;
 public interface RouteAndProcessService {
 
     @Gateway(requestChannel = MainIntegrationConfig.inputChannel)
-    void uppercase(Message<?> message);
+    void messageToAcmqFlow(Message<?> message);
+
 }
