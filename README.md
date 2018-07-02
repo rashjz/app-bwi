@@ -1,8 +1,8 @@
 # app-bwi
 
 
-management.security.enabled=false
-management.context-path=/actuator
+###### management.security.enabled=false
+###### management.context-path=/actuator
 
 spring boot [hystrix](http://www.baeldung.com/spring-cloud-netflix-hystrix) implementation example 
 
