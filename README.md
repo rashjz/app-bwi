@@ -36,3 +36,17 @@ Java code example
         return 1L;
     }
 ```
+And Finally you have to add hystrix annotation to main class
+
+
+```java
+@EnableHystrixDashboard
+@EnableCircuitBreaker
+@SpringBootApplication
+public class MyApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+```
