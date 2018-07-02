@@ -4,7 +4,7 @@
 management.security.enabled=false
 management.context-path=/actuator
 
-```java
+```xml
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
