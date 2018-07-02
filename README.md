@@ -4,6 +4,10 @@
 ###### management.security.enabled=false
 ###### management.context-path=/actuator
 
+
+By default hystrix dashboard url will be ../actuator/hystrix.stream 
+after enter url you can specify app name and delay interval 
+
 spring boot [hystrix](http://www.baeldung.com/spring-cloud-netflix-hystrix) implementation example 
 
 ```xml
